@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Forgot Password
+{% endblock %}
+
+{% block main %}
+
+<!-- If the user has forgotten her password, can create new one by inputting username, first name, last name, and birthday -->
+    <form action="/forgot" method="post">
+
+        <div class="form-group">
+            <input class="form-control" name="username" placeholder="Username" type="text">
+        </div>
+
+        <div class="form-group">
+            <input class="form-control" name="first_name" placeholder="First Name" type="text">
+        </div>
+
+        <div class="form-group">
+            <input class="form-control" name="last_name" placeholder="Last Name" type="text">
+        </div>
+
+        <div class="form-group">
+            <input class="form-control" name="birthday" type="date">
+        </div>
+
+        <!-- Password complexity requirement -->
+        <div class="form-group">
+            <input class="form-control" name="password" placeholder="New Password" type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[!-/,:-@])(?=.*[A-Z]).{8,}">
+        </div>
+
+        <div class="form-group">
+            <input class="form-control" name="confirmation" placeholder="Confirm New Password" type="password">
+        </div>
+
+       <small id="passwordHelpBlock" class="form-text text-muted">
+          Your password must contain at least one number, one uppercase and lowercase letter, one special character, and 8 or more characters.
+        </small>
+
+        <button class="btn btn-outline-dark" type="submit">Set New Password</button>
+    </form>
+{% endblock %}

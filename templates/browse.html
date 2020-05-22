@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Browse
+{% endblock %}
+
+{% block main %}
+    <!-- Display user's name if in session -->
+    {% if session.user_id %}
+    <h4 class="left" style="margin-bottom: 20px">Welcome, {{ first_name }}!</h4>
+    {% endif %}
+
+    <!-- Display table of stories in card format -->
+    {% for row in range(rows) %}
+    <div class="row" style="padding: 1em 0 0 0;">
+        {% if length - row*3 >= 3 %}
+        {% for i in range(3) %}
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ stories[i + row*3]["title"] }}</h5>
+                    <p class="card-text"><small class="text-muted">{{ stories[i + row*3]["name"] }}</small></p>
+                    <p class="preview">{{ stories[i + row*3]["story"] }}</p>
+                    <form action="/browse" method="post">
+                        <button class="btn btn-outline-dark" type="submit" name="story_id" value={{ stories[i + row*3]["story_id"] }}>Read</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        {% for i in range(length - row*3) %}
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ stories[i + row*3]["title"] }}</h5>
+                    <p class="card-text"><small class="text-muted">{{ stories[i + row*3]["name"] }}</small></p>
+                    <p class="preview">{{ stories[i + row*3]["story"] }}</p>
+                    <form action="/browse" method="post">
+                        <button class="btn btn-outline-dark" type="submit" name="story_id" value={{ stories[i + row*3]["story_id"] }}>Read</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+    {% endfor %}
+
+{% endblock %}

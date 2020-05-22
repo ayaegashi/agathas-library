@@ -1,0 +1,23 @@
+<head>
+    <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+</head>
+
+
+{% extends "layout.html" %}
+
+{% block title %}
+    Search
+{% endblock %}
+
+{% block main %}
+
+    <!-- Display a text field and a submit button to search -->
+
+    <form action="/search" method="post">
+        <div class="input-group-append">
+            <input id="form" autocomplete="off" name="search" type="text" placeholder="Search by Title or Author" autofocus class="form-control">
+        <button class="btn btn-outline-dark" type="submit">Search <i id="search" class="fas fa-search"></i></button>
+        </div>
+   </form>
+
+{% endblock %}

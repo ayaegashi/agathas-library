@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+    <!-- Form inputs for username, first name, last name, birthday, password, confirm password -->
+    <form action="/register" method="post">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text">
+        </div>
+
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="first_name" placeholder="First Name" type="text">
+        </div>
+
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="last_name" placeholder="Last Name" type="text">
+        </div>
+
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="birthday" type="date">
+        </div>
+
+        <!-- Password complexity requirement -->
+        <div class="form-group">
+            <input class="form-control" name="password" placeholder="Password" type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[!-/,:-@])(?=.*[A-Z]).{8,}">
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="confirmation" placeholder="Confirm Password" type="password">
+        </div>
+
+        <small id="passwordHelpBlock" class="form-text text-muted">
+          Your password must contain at least one number, one uppercase and lowercase letter, one special character, and 8 or more characters.
+        </small>
+
+        <button class="btn btn-outline-dark" type="submit">Register</button>
+    </form>
+
+<script>
+// Example starter JavaScript for disabling form submissions if there are invalid fields
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
+</script>
+{% endblock %}

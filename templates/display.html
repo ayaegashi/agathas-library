@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Display
+{% endblock %}
+
+{% block script %}
+<!-- Fuction to display login required if user is not in session -->
+<script>
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    })
+</script>
+{% endblock %}
+
+
+{% block main %}
+    <div class="text-right mb-3">
+    <!-- Add to user's favorite stories if they are in session -->
+    {% if session.user_id %}
+        <form action="/display" method="post">
+            <button class="btn btn-link" type="submit" name="favorite" value={{ story[0]["story_id"] }}>
+        {% if liked %}
+                <img src={{url_for('static', filename='heartfilled.png')}} width="54" height="51" alt="favorite!"/>
+        {% else %}
+                <img src={{url_for('static', filename='heart.png')}} width="54" height="51" alt="favorite!"/>
+        {% endif %}
+            </button>
+        </form>
+    <!-- If user is not in session display message to login -->
+    {% else %}
+    <button class="btn btn-link" type="button" name="favorite" value={{ story[0]["story_id"] }} data-toggle="popover" data-content="Log in or Register to favorite a story!" data-placement="left">
+        <img src={{url_for('static', filename='heart.png')}} width="54" height="51" alt="favorite!"/>
+    </button>
+    {% endif %}
+    </div>
+
+    <!-- Display story -->
+    <h2>{{ story[0]["title"] }}</h2>
+    <h5 style="padding: .5em 0 0 0;">{{ story[0]["name"] }}</h5>
+    {% if story[0]["story_id"] in exceptions %}
+    <p style="white-space: pre-wrap; padding: 1em 0 0 0;">{{ story[0]["story"] }}</p>
+    {% else %}
+    <p class="text-left mb-3" style="white-space: pre-wrap; padding: 1em 0 0 0;">{{ story[0]["story"] }}</p>
+    {% endif %}
+
+{% endblock %}

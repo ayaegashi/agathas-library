@@ -1,0 +1,87 @@
+nav .navbar-brand
+{
+    /* size for brand */
+    font-size: xx-large;
+}
+
+
+
+main .form-control
+{
+    /* center form controls */
+    display: inline-block;
+
+    /* override Bootstrap's 100% width for form controls */
+    width: auto;
+}
+
+main
+{
+    /* scroll horizontally as needed */
+    overflow-x: auto;
+
+    /* center contents */
+    text-align: center;
+}
+
+main img
+{
+    /* constrain images on small screens */
+    max-width: 100%;
+}
+
+.preview {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.submission {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#form{
+    width: 200%;
+}
+
+#result{
+    text-align: left;
+}
+
+body {
+    font-family: 'Amiri';
+}
+
+p{
+    font-size: 13pt;
+}
+
+.text-muted{
+    font-size: 12pt;
+}
+
+.nav-item{
+    font-size: 13pt;
+}
+
+.form-column{
+    text-align: center;
+}
+
+#passwordHelpBlock{
+    padding-bottom: 0.5cm;
+    font-size: 10pt;
+}
+
+.left{
+    text-align: left;
+}
+
+.left_indent{
+    text-align: left;
+    margin-left: 1cm;
+}

@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Admin Display
+{% endblock %}
+
+
+{% block main %}
+
+<!-- Display page for administrators, looking at newly submitted stories. Different from display.html because also displays email and timestamp -->
+    <h2>{{ story[0]["title"] }}</h2>
+    <h5 style="padding: .5em 0 0 0;">{{ story[0]["author"] }}</h5>
+    <p>{{ story[0]["email"] }}</p>
+    <p>{{ story[0]["timestamp"] }}</p>
+    <p class="text-left mb-3" style="white-space: pre-wrap; padding: 1em 0 0 0;">{{ story[0]["story"] }}</p>
+
+    <div>
+        <form action="/admin">
+            <button class="btn btn-outline-dark" type="submit" }}>Return</button>
+        </form>
+
+        <form action="/display_admin" method="post">
+            <div class="btn-group lead" role="group" aria-label="Options" style="padding: 1em 0 0 0;">
+                <button class="btn btn-outline-dark" type="submit" name="approve" value={{ story[0]["story_id"] }}>Approve</button>
+                <button class="btn btn-outline-dark" type="submit" name="delete" value={{ story[0]["story_id"] }}>Delete</button>
+            </div>
+        </form>
+    </div>
+
+
+{% endblock %}

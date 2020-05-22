@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Change password
+{% endblock %}
+
+{% block main %}
+    <!-- Display an input form to change password -->
+    <form action="/change" method="post">
+        <div class="form-group">
+            <input class="form-control" name="old" placeholder="Old Password" type="password">
+        </div>
+
+        <div class="form-group">
+            <input class="form-control" name="new" placeholder="New Password" type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[!-/,:-@])(?=.*[A-Z]).{8,}">
+        </div>
+
+        <div class="form-group">
+            <input class="form-control" name="confirmation" placeholder="Confirm Password" type="password">
+        </div>
+
+        <small id="passwordHelpBlock" class="form-text text-muted">
+          Your password must contain at least one number, one uppercase and lowercase letter, one special character, and 8 or more characters.
+        </small>
+
+        <button class="btn btn-outline-dark" type="submit">Change Password</button>
+    </form>
+{% endblock %}

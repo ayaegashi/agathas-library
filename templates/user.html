@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    {{ first_name }}'s Page
+{% endblock %}
+
+{% block main %}
+
+    <h4>Welcome, {{ first_name }}!</h4>
+    <!-- Display a table of the user's favorite stories, if the user has favorites -->
+    {% if have_favorites %}
+    <div class="text-left mb-3" style="padding: 1em 0 0 0;">
+        <h6>Your favorite stories:</h6>
+    </div>
+
+    <form action="/browse" method="post">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for story in fav_stories %}
+                <tr>
+                    <td><button class="btn btn-light" type="submit" name="story_id" value={{ story["story_id"] }}>{{ story["title"] }}</button></a></td>
+                    <td>{{ story["name"] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </form>
+
+
+    <!-- RECOMMENDATIONS BASED ON OTHER USERS -->
+
+    {% if have_recs %}
+    <div class="text-left mb-3" style="padding: 3em 0 0 0;">
+        <h6>Other users who liked <mark><strong>"{{ rand_story_title[0]["title"] }}"</strong></mark> also liked:</h6>
+    </div>
+    <form action="/browse" method="post">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rec in recs %}
+                <tr>
+                    <td><button class="btn btn-light" type="submit" name="story_id" value={{ rec["story_id"] }}>{{ rec["title"] }}</button></a></td>
+                    <td>{{ rec["name"] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </form>
+    {% endif %}
+
+    <!-- If the user does not have favorite stories, don't display any stories. -->
+    {% else %}
+    <p>You don't have any favorite stories yet.</p>
+    <a href="/browse"><button class="btn btn-outline-dark" type="submit">Browse!</button></a>
+    {% endif %}
+
+
+{% endblock %}

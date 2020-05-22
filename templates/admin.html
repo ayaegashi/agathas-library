@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Admin
+{% endblock %}
+
+{% block main %}
+
+    <h4 class="left" style="margin-bottom: 20px">Welcome, {{ first_name }}!</h4>
+
+    <!-- Display table if there is a submission -->
+    {% if length != 0 %}
+    <form action="/admin" method="post">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Text</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for story in submissions %}
+                <tr>
+                    <td>{{ story["story_id"] }}</td>
+                    <td><button class="btn btn-light" type="submit" name="story_id" value={{ story["story_id"] }}>{{ story["title"] }}</button></a></td>
+                    <td>{{ story["author"] }}</td>
+                    <td class="submission">{{ story["story"] }}</td>
+                    <td>{{ story["timestamp"] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </form>
+    <!-- Display this if no submissions -->
+    {% else %}
+    <div class="left" style="padding: 1em 0 0 0;"> No new submissions. </div>
+    {% endif %}
+
+{% endblock %}

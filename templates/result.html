@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Search Results
+{% endblock %}
+
+<!-- Display search results (very similar in format to browse.html -->
+
+{% block main %}
+    <!-- Only display search table if there are results -->
+    {% if length > 1 %}
+    <p id="result">{{ length }} search results for <mark>"{{ search }}"</mark>:</p>
+    {% else %}
+    <p id="result">{{ length }} search result for <mark>"{{ search }}"</mark>.</p>
+    {% endif %}
+    {% for row in range(rows) %}
+    <div class="row" style="padding: 1em 0 0 0;">
+        {% if length - row*3 >= 3 %}
+        {% for i in range(3) %}
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ result[i + row*3]["title"] }}</h5>
+                    <p class="card-text"><small class="text-muted">{{ result[i + row*3]["name"] }}</small></p>
+                    <p class="preview">{{ result[i + row*3]["story"] }}</p>
+                    <form action="/browse" method="post">
+                        <button class="btn btn-outline-dark" type="submit" name="story_id" value={{ result[i + row*3]["story_id"] }}>Read!</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        {% for i in range(length - row*3) %}
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ result[i + row*3]["title"] }}</h5>
+                    <p class="card-text"><small class="text-muted">{{ result[i + row*3]["name"] }}</small></p>
+                    <p class="preview">{{ result[i + row*3]["story"] }}</p>
+                    <form action="/browse" method="post">
+                        <button class="btn btn-outline-dark" type="submit" name="story_id" value={{ result[i + row*3]["story_id"] }}>Read!</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+    {% endfor %}
+
+{% endblock %}
