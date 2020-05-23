@@ -1,4 +1,4 @@
-If you are running in CS50 IDE, no installations required. If you are not running in CS50 IDE, then install CS50 files.
+Please run this project in the CS50 IDE, with no installations required.
 
 How to Compile:
 Make sure you are in ~/project/agathas/ and type in "flask run" into the terminal. Click the link that is produced.

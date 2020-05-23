@@ -7,19 +7,16 @@ design decisions that we made, organized by the programming language that we use
 -SQL-
 We implemented a database consisting of five tables. These tables are authors, favorites, users, stories, and submissions.
 In "authors", we have the author_id and name columns. Author_id automatically increments, and can be linked to the "stories"
-table by setting authors.author_id=stories.author_id. Initially when we created the table, we created columns for "first name"
-and "last name" as we thought this might make our search function run smoother. However, using the SQL keyword "LIKE", we no
-longer needed these columns. (We found that sqlite does not allow one to delete columns). This table keeps track of all the
-authors, as the name implies, as well as the authors of newly submitted stories that the admin approves.
+table by setting authors.author_id=stories.author_id. This table keeps track of all the authors, as the name implies, as well
+as the authors of newly submitted stories that the admin approves.
 "Favorites" consists of story_id and user_id and stores information about which user liked what story. Story_id is used to link
 to the stories table and user_id is used to link to the users table.
 "Users" manages all the users who have registered. It has user_id, username, pass_hash, first_name, and admin columns.
 These are used in various pages, namely user_id is used to see which user is in the current session. The admin column
 is made a global variable by setting it to session["admin"]. This boolean allows us to decide whether or not to reveal
 the "Admin" tab on the navigation bar.
-"Stories" is the heart of our website and stores story_id, title, story, clicks, finished and author_id. We initially were
-planning on tracking whether users finish stories by incrementing the "finished" column by one each time a user finished the story
-but we decided to not implement this feature.
+"Stories" is the heart of our website and stores story_id, title, story, clicks, finished and author_id. The 'clicks' columns tracks
+how many times a story has been viewed, which determines the order in which the stories are displayed to users in \browse.
 Lastly, "submissions" is the table that stories sent by users result in. It consists of story_id, title, story, email, author,
 approved, timestamp, and deleted columns. The approved and deleted columns are important to decide whether or not to display
 a story on the "Admin" page (if a story has columns deleted=TRUE and/or approved=TRUE it will not appear to the admin).
@@ -39,26 +36,22 @@ recommendation list are also in the user's favorites list. (For our recommendati
 
 
 -Flask-
-In our application.py, we have many @app.route so that a particular function will occur in certain websites.
+In our application.py, we have several @app.route so that a particular function will occur in certain websites.
 /about and / (welcome.html, cover page), two of our simplest ones, render to open their respective pages. These two pages are mostly
 text, although / also has three buttons that redirect to various other routes.
 Our other @app.route are more complicated as we will explain below.
 
 /contact, /admin, and /display_admin
-The route has two methods, GET and POST. When called on by GET, this returns a simple input form that allows users to input their submissions
-for our website. The POST method is more complicated. At first, we wanted to configure the input form so that it would send us (the administrators)
-an email containing the submitted text, title and author name. We created an email address for this purpose called "agathaslibrary@gmail.com".
-We initially tried to do this by using flask_mail. However, unfortunately we could not get this to work, as it returned an OS error that we could not
-solve. Instead, we decided to implement a different method (lines 57-68 in application.py). When a user submits something to this form, their
+These routes have two methods, GET and POST. When called on by GET, this returns a simple input form that allows users to input their submissions
+for our website. The POST method is more complicated (lines 57-68 in application.py). When a user submits something to this form, their
 submission is inputted into a table in our database called "submissions". Upon users’ submissions, their information, in addition to the time of
 submission, is stored in respective columns of the submission table. Automatically, the columns approved and deleted are set to FALSE. When a user
-with administrative permission logs into our website, they can access this submission via the "Admin" page. (In README.md, we provide the username
-and password to an administrator account). If there are submissions that are not yet approved and not deleted (approved=FALSE and deleted=FALSE)
-then these stories will appear to the administrator. If the administrator clicks on a story to read it, she then has the option to approve, delete,
-or do nothing to this story. If she chooses either of the first two options, the story will no longer appear on the "Admin" page. This is because,
-if she approves the story, approved=TRUE so it will not be listed on "Admin". Our Python code gets the story_id for this story and uses this to
-insert this story and author into the "stories" and "authors" tables. The story will then appear on "Browse". If the admin deletes a story,
-deleted=TRUE and it will no longer appear on the "Admin" page (although it is not truly deleted).
+with administrative permission logs into our website, they can access this submission via the "Admin" page. If there are submissions that are not
+yet approved and not deleted (approved=FALSE and deleted=FALSE) then these stories will appear to the administrator. If the administrator clicks on
+a story to read it, she then has the option to approve, delete, or do nothing to this story. If she chooses either of the first two options, the story
+will no longer appear on the "Admin" page. This is because, if she approves the story, approved=TRUE so it will not be listed on "Admin". Our Python
+code gets the story_id for this story and uses this to insert this story and author into the "stories" and "authors" tables. The story will then appear
+on "Browse". If the admin deletes a story, deleted=TRUE and it will no longer appear on the "Admin" page (although it is not truly deleted).
 
 /user serves as a dashboard for the users.
 We first present users with stories that they have favorited. Using "if" conditional statements in dashboard.html, we display a table of their favorite
@@ -84,9 +77,9 @@ better when they were centered by putting them into a global list called "except
 One thing that was difficult about display.html was the like button. We wanted the heart to become filled in when a user favorited a story and return to
 just an outline if they un-favorited it. However, at the same time we wanted this action to trigger a change in the favorites table in our SQL database.
 because we had to link this front-end change with back-end code, the process of the heart changing from filled to not (or vice versa) is slightly slower
-than if we had implemented with JavaScript. However, we couldn't figure out how to make a change in the SQL database if we used only JavaScript.
-Lastly, we did use JavaScript to implement a popover function. Essentially, if the user is not logged in, they cannot favorite a story. Thus, when they click
-the heart, instead of turning solid, via a JavaScript function a popover is toggled notifying the user that they have to log in (see lines 8-12 on
+than if we had implemented with JavaScript. However, we chose our solution because we needed to make a change in the SQL database.
+Lastly, we did use JavaScript to implement a popover function. Essentially, if the user is not logged in, they cannot favorite a story. Thus, when they
+click the heart, instead of turning solid, via a JavaScript function a popover is toggled notifying the user that they have to log in (see lines 8-12 on
 display.html).
 /display is very similar to /display_admin except for the difference in buttons.
 You will notice that both /display and /display_admin only have POST methods. We decided to implement it this way because we needed to know which story
@@ -94,7 +87,7 @@ to display for both of these pages. The user decides which story in either /brow
 directly in /browse or /admin. They both have POST methods because both pages have buttons that need to either change something in a SQL table or
 redirect the user.
 
-/login, /register, /logout function in the same matter as the CS50 finance.
+/login, /register, /logout
 Once the user’s information is stored in the SQL database with /register, the user will be able to login, querying the database to see if the
 username and password input of the user is existent in the database. Log out simply takes the user out of their session.
 
